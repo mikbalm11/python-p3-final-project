@@ -2,6 +2,9 @@ class Trail:
     
     def __init__(self, name):
         self.name = name
+    
+    def __str__(self):
+        return f"Trail: {self.name}"
 
 class Hike:
     
