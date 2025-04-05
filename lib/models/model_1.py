@@ -18,7 +18,7 @@ class Trail:
         if isinstance(new_name, str) and 3 <= len(new_name) and not hasattr(self, "name"):
             self._name = new_name
         else:
-            raise Exception("Trail name must be a string longer than 3 characters.")\
+            raise Exception("Trail name must be a string longer than 3 characters.")
     
     def hikes(self):
         return [hike for hike in Hike.all if hike.trail is self]
@@ -76,7 +76,7 @@ class Hiker:
         Hiker.all.append(self)
 
     def __repr__(self):
-        return f"Hiker: {self.name}, {self.age} years old"
+        return f"Hiker: {self.name}, {self.age} years old."
     
     @property
     def name(self):

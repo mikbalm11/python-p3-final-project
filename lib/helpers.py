@@ -21,17 +21,22 @@ hikes = [Hike(random.choice(trails), random.choice(hikers)) for _ in range(20)]
 # h = Hiker("John Doe", 30)
 # k = Hike(t, h)
 
-def helper_1():
-    print("Performing useful function#1.")
+def list_hiker_hikes():
+    hikername = input("Please enter hiker name to list hikes completed.")
+    hiker = next((hiker for hiker in Hiker.all if hiker.name == hikername), None)
+    if hiker:
+        print(f"Hiker {hiker.name} has completed the following hikes:")
+        for hike in hiker.hikes():
+            print(hike)
 
 def trailname():
-    print(trails)
+    [print(f"{trail}") for trail in Trail.all]
 
 def hikername():
-    print(hikers)
+    [print(f"{hiker}") for hiker in Hiker.all]
 
 def hikename():
-    print(hikes)
+    [print(f"{hike}") for hike in Hike.all]
 
 def exit_program():
     print("Goodbye!")

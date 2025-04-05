@@ -5,7 +5,7 @@ from helpers import (
     trailname,
     hikername,
     hikename,
-    helper_1
+    list_hiker_hikes
 )
 
 
@@ -16,7 +16,7 @@ def main():
         if choice == "0":
             exit_program()
         elif choice == "1":
-            helper_1()
+            list_hiker_hikes()
         elif choice == "2":
             trailname()
         elif choice == "3":
