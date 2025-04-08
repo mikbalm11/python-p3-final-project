@@ -7,7 +7,6 @@ class Trail:
     def __init__(self, name, id = None):
         self.id = id
         self.name = name
-        # Trail.all.append(self)
     
     def __repr__(self):
         return f"Trail: {self.name}"
@@ -18,7 +17,7 @@ class Trail:
     
     @name.setter
     def name(self, new_name):
-        if isinstance(new_name, str) and 3 <= len(new_name) and not hasattr(self, "name"):
+        if isinstance(new_name, str) and 3 <= len(new_name): # and not hasattr(self, "name"):
             self._name = new_name
         else:
             raise Exception("Trail name must be a string longer than 3 characters.")
@@ -56,7 +55,7 @@ class Trail:
         CONN.commit()
 
         self.id = CURSOR.lastrowid
-        # type(self).all[self.id] = self
+        type(self).all[self.id] = self
 
     @classmethod
     def create(cls, name):
@@ -104,12 +103,12 @@ class Trail:
 
 class Hike:
     
-    all = []
+    all = {}
     
-    def __init__(self, trail, hiker):
+    def __init__(self, trail, hiker, id=None):
+        self.id = id
         self.trail = trail
         self.hiker = hiker
-        Hike.all.append(self)
 
     def __repr__(self):
         return f"Hike: {self.trail} completed by {self.hiker}"
@@ -158,7 +157,60 @@ class Hike:
         """
         CURSOR.execute(sql)
         CONN.commit()
-    
+
+    def save(self):
+        """ Insert a new row with the name value of the current Hike object.
+        Update object id attribute using the primary key value of new row.
+        Save the object in local dictionary using table row's PK as dictionary key"""
+        sql = """
+                INSERT INTO hikes (trail_id, hiker_id)
+                VALUES (?, ?)
+        """
+
+        CURSOR.execute(sql, (self.trail.id, self.hiker.id))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+
+    @classmethod
+    def create(cls, trail, hiker):
+        """ Initialize a new Hike instance and save the object to the database """
+        hike = cls(trail, hiker)
+        hike.save()
+        return hike
+
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a Hike object having the attribute values from the table row."""
+
+        # Check the dictionary for  existing instance using the row's primary key
+        hike_id, trail_id, hiker_id = row
+        trail = Trail.all.get(trail_id)
+        hiker = Hiker.all.get(hiker_id)
+
+        if not (trail and hiker):
+            raise Exception
+
+        hike = cls.all.get(hike_id)
+        if not hike:
+            hike = cls(trail, hiker, id=hike_id)
+            cls.all[hike_id] = hike
+
+        return hike
+
+    @classmethod
+    def get_all(cls):
+        """Return a list containing one Hike object per table row"""
+        sql = """
+            SELECT *
+            FROM hikes
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+
     def all_hikes(self):
         return Hike.all
     
@@ -170,7 +222,6 @@ class Hiker:
         self.id = id
         self.name = name
         self.age = age
-        # Hiker.all.append(self)
 
     def __repr__(self):
         return f"Hiker: {self.name}, {self.age} years old."
@@ -220,15 +271,14 @@ class Hiker:
         CONN.commit()
 
         self.id = CURSOR.lastrowid
-        # type(self).all[self.id] = self
+        type(self).all[self.id] = self
 
     @classmethod
     def create(cls, name, age):
         """ Initialize a new Trail instance and save the object to the database """
-        trail = cls(name, age)
-        trail.save()
-        return trail
-
+        hiker = cls(name, age)
+        hiker.save()
+        return hiker
 
     @classmethod
     def instance_from_db(cls, row):

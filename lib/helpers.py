@@ -40,7 +40,9 @@ def hikername():
         print(hiker)
 
 def hikename():
-    [print(f"{hike}") for hike in Hike.all]
+    hikes = Hike.get_all()
+    for hike in hikes:
+        print(hike)
 
 def exit_program():
     print("Goodbye!")

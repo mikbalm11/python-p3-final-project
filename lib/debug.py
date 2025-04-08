@@ -27,8 +27,14 @@ def reset_database():
     [Trail.create(name) for name in trail_names]
     [Hiker.create(name, random.randint(18, 65)) for name in hiker_names]
 
-    # Create 20 Hike instances, randomly assigning trails and hikers 
-    [Hike(random.choice(Trail.all), random.choice(Hiker.all)) for _ in range(20)]
+    print("Trails in memory:", Trail.all.keys())
+    print("Hikers in memory:", Hiker.all.keys())
 
+    # Create 20 Hike instances, randomly assigning trails and hikers 
+    [Hike.create(random.choice(Trail.get_all()), random.choice(Hiker.get_all())) for hike in range(20)]
+
+    print("Raw hike rows:", CURSOR.execute("SELECT * FROM hikes").fetchall())
+    print("Hikes in DB:", CURSOR.execute("SELECT * FROM hikes").fetchall())
+    
 reset_database()
 ipdb.set_trace()
