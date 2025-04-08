@@ -164,13 +164,13 @@ class Hike:
     
 class Hiker:
     
-    all = []
+    all = {}
     
     def __init__(self, name, age, id = None):
         self.id = id
         self.name = name
         self.age = age
-        Hiker.all.append(self)
+        # Hiker.all.append(self)
 
     def __repr__(self):
         return f"Hiker: {self.name}, {self.age} years old."
@@ -228,6 +228,36 @@ class Hiker:
         trail = cls(name, age)
         trail.save()
         return trail
+
+
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a Hiker object having the attribute values from the table row."""
+
+        # Check the dictionary for  existing instance using the row's primary key
+        hiker = cls.all.get(row[0])
+        if hiker:
+            # ensure attributes match row values in case local instance was modified
+            hiker.name = row[1]
+            hiker.age = row[2]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            hiker = cls(row[1], row[2])
+            hiker.id = row[0]
+            cls.all[hiker.id] = hiker
+        return hiker
+
+    @classmethod
+    def get_all(cls):
+        """Return a list containing one Hiker object per table row"""
+        sql = """
+            SELECT *
+            FROM hikers
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
     
     def hikes(self):
         return [hike for hike in Hike.all if hike.hiker is self]

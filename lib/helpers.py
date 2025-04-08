@@ -23,7 +23,7 @@ from models.model_1 import Hike
 
 def list_hiker_hikes():
     hikername = input("Please enter hiker name to list hikes completed: ")
-    hiker = next((hiker for hiker in Hiker.all if hiker.name == hikername), None)
+    hiker = next((hiker for hiker in Hiker.get_all() if hiker.name == hikername), None)
     if hiker:
         print(f"Hiker {hiker.name} has completed the following hikes:")
         for hike in hiker.hikes():
@@ -35,7 +35,9 @@ def trailname():
         print(trail)
 
 def hikername():
-    [print(f"{hiker}") for hiker in Hiker.all]
+    hikers = Hiker.get_all()
+    for hiker in hikers:
+        print(hiker)
 
 def hikename():
     [print(f"{hike}") for hike in Hike.all]
