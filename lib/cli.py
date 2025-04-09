@@ -5,7 +5,8 @@ from helpers import (
     trailname,
     hikername,
     hikename,
-    list_hiker_hikes
+    list_hiker_hikes,
+    add_trail
 )
 
 
@@ -23,18 +24,20 @@ def main():
             hikername()
         elif choice == "4":
             hikename()
+        elif choice == "5":
+            add_trail()
         else:
             print("Invalid choice")
 
 
 def menu():
     print("Please select an option:")
-    print("0. Exit the program")
+    print("0. List hiker's completed trails")
     print("1. Some useful function")
     print("2. Print trail name")
     print("3. Print hikername")
     print("4. Print hikename")
-
+    print("5. Add new trail")
 
 if __name__ == "__main__":
     main()
