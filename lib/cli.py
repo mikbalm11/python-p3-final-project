@@ -6,7 +6,9 @@ from helpers import (
     hikername,
     hikename,
     list_hiker_hikes,
-    add_trail
+    add_trail,
+    find_trail_by_id,
+    find_trail_by_name
 )
 
 
@@ -26,6 +28,10 @@ def main():
             hikename()
         elif choice == "5":
             add_trail()
+        elif choice == "6":
+            find_trail_by_id()
+        elif choice == "7":
+            find_trail_by_name()
         else:
             print("Invalid choice")
 
@@ -38,6 +44,8 @@ def menu():
     print("3. Print hikername")
     print("4. Print hikename")
     print("5. Add new trail")
+    print("6. Find by trail id")
+    print("7. Find by trail name")
 
 if __name__ == "__main__":
     main()

@@ -9,7 +9,7 @@ class Trail:
         self.name = name
     
     def __repr__(self):
-        return f"Trail: {self.name}"
+        return f"{self.id}. Trail: {self.name}"
     
     @property
     def name(self):
@@ -91,6 +91,30 @@ class Trail:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
+    
+    @classmethod
+    def find_by_id(cls, id):
+        """Return Trail object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM trails
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_name(cls, name):
+        """Return Trail object corresponding to first table row matching specified name"""
+        sql = """
+            SELECT *
+            FROM trails
+            WHERE name is ?
+        """
+
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
     
     def hikes(self):
         return [hike for hike in Hike.all if hike.trail is self]

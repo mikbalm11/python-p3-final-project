@@ -34,6 +34,19 @@ def add_trail():
     new_trail = Trail.create(new_trail_name)
     print(new_trail)
 
+def find_trail_by_id():
+    searched_trail_id = int(input("Please enter id of the trail searched: "))
+    print(Trail.find_by_id(searched_trail_id))
+
+def find_trail_by_name():
+    searched_trail_name = input("Please enter name of the trail searched: ")
+    output = Trail.find_by_name(searched_trail_name)
+    if output:
+        print(output)
+    else:
+        print("Could not find trail with entered name.")
+    
+
 def exit_program():
     print("Goodbye!")
     exit()
