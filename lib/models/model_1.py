@@ -310,7 +310,7 @@ class Hiker:
         return [cls.instance_from_db(row) for row in rows]
     
     def hikes(self):
-        return [hike for hike in Hike.all if hike.hiker is self]
+        return [hike for hike in Hike.get_all() if hike.hiker is self]
     
     def all_hikers(self):
         return Hiker.all

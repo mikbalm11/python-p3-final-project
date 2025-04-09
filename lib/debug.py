@@ -31,7 +31,7 @@ def reset_database():
     print("Hikers in memory:", Hiker.all.keys())
 
     # Create 20 Hike instances, randomly assigning trails and hikers 
-    [Hike.create(random.choice(Trail.get_all()), random.choice(Hiker.get_all())) for hike in range(20)]
+    [Hike.create(random.choice(Trail.get_all()), random.choice(Hiker.get_all())) for hike in range(30)]
 
     print("Raw hike rows:", CURSOR.execute("SELECT * FROM hikes").fetchall())
     print("Hikes in DB:", CURSOR.execute("SELECT * FROM hikes").fetchall())
