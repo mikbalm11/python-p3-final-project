@@ -8,9 +8,9 @@ from helpers import (
     list_hiker_hikes,
     add_trail,
     find_trail_by_id,
-    find_trail_by_name
+    find_trail_by_name,
+    update_trail_name
 )
-
 
 def main():
     while True:
@@ -32,20 +32,23 @@ def main():
             find_trail_by_id()
         elif choice == "7":
             find_trail_by_name()
+        elif choice == "8":
+            update_trail_name()
         else:
             print("Invalid choice")
 
 
 def menu():
     print("Please select an option:")
-    print("0. List hiker's completed trails")
-    print("1. Some useful function")
+    print("0. Exit the program")
+    print("1. List hiker's completed trails")
     print("2. Print trail name")
     print("3. Print hikername")
     print("4. Print hikename")
     print("5. Add new trail")
     print("6. Find by trail id")
     print("7. Find by trail name")
+    print("8. Update trail name")
 
 if __name__ == "__main__":
     main()

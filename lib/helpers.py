@@ -2,9 +2,9 @@
 
 import random
 
-from models.model_1 import Trail
-from models.model_1 import Hiker
-from models.model_1 import Hike
+from models.trail import Trail
+from models.hiker import Hiker
+from models.hike import Hike
 
 def list_hiker_hikes():
     hikername = input("Please enter hiker name to list hikes completed: ")
@@ -46,6 +46,16 @@ def find_trail_by_name():
     else:
         print("Could not find trail with entered name.")
     
+def update_trail_name():
+    searched_trail_id = int(input("Please enter id of the trail searched: "))
+    output = Trail.find_by_id(searched_trail_id)
+    if output:
+        new_name = input("Enter the trails's new name: ")
+        output.name = new_name
+        output.update()
+        print(f"Success: {output}")
+    else:
+        print("Error updating trail name")
 
 def exit_program():
     print("Goodbye!")

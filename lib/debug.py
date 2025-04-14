@@ -3,9 +3,9 @@
 
 import random
 from models.__init__ import CONN, CURSOR
-from models.model_1 import Trail
-from models.model_1 import Hiker
-from models.model_1 import Hike
+from models.trail import Trail
+from models.hiker import Hiker
+from models.hike import Hike
 import ipdb
 
 def reset_database():
