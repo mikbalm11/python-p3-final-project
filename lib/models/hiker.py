@@ -11,7 +11,7 @@ class Hiker:
         self.age = age
 
     def __repr__(self):
-        return f"Hiker: {self.name}, {self.age} years old."
+        return f"{self.id}. Hiker: {self.name}, {self.age} years old."
     
     @property
     def name(self):
@@ -78,6 +78,21 @@ class Hiker:
         hiker.save()
         return hiker
 
+    def update(self):
+        """Update the hiker's name in the database to match the object's current state."""
+        if self.id is None:
+            raise Exception("Hiker must be saved before it can be updated.")
+
+        sql = """
+            UPDATE hikers
+            SET name = ?,
+            age = ?
+            WHERE id = ?
+        """
+
+        CURSOR.execute(sql, (self.name, self.age, self.id))
+        CONN.commit()
+
     @classmethod
     def instance_from_db(cls, row):
         """Return a Hiker object having the attribute values from the table row."""
@@ -106,11 +121,35 @@ class Hiker:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_id(cls, id):
+        """Return Hiker object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM hikers
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_name(cls, name):
+        """Return Hiker object corresponding to first table row matching specified name"""
+        sql = """
+            SELECT *
+            FROM hikers
+            WHERE name = ?
+        """
+ 
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
     
     def hikes(self):
         """Return a list of all hikes completed by this hiker."""
         from models.hike import Hike
-        return [hike for hike in Hike.all_hikes() if hike.hiker is self]
+        return Hike.get_by_hiker_id(self.id)
 
     @classmethod
     def all_hikers(cls):

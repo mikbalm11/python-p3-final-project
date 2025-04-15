@@ -27,7 +27,7 @@ def reset_database():
 
     hikers = Hiker.get_all()
     # Create 20 Hike instances, randomly assigning trails and hikers 
-    for _ in range(30):
+    for _ in range(60):
         Hike.create(random.choice(trail_names), random.choice(hikers))
 
     print("Hikes in DB:", CURSOR.execute("SELECT * FROM hikes").fetchall())

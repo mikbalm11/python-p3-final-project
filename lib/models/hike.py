@@ -13,7 +13,7 @@ class Hike:
         self.hiker = hiker
 
     def __repr__(self):
-        return f"Hike: {self.trail_name} completed by {self.hiker}"
+        return f"{self.id}. Hike: {self.trail_name} completed by {self.hiker}"
 
     @property
     def trail_name(self):
@@ -90,7 +90,7 @@ class Hike:
         hiker = Hiker.all.get(hiker_id)
 
         if not hiker:
-            raise Exception(f"Hiker with ID {hiker_id} not found.")
+            raise Exception(f"Hiker with id {hiker_id} not found.")
 
         hike = cls.all.get(hike_id)
         if not hike:
@@ -98,6 +98,14 @@ class Hike:
             cls.all[hike_id] = hike
 
         return hike
+
+    @classmethod
+    def get_by_hiker_id(cls, hiker_id):
+        sql = """
+            SELECT * FROM hikes WHERE hiker_id = ?
+        """
+        rows = CURSOR.execute(sql, (hiker_id,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
 
     @classmethod
     def get_all(cls):
