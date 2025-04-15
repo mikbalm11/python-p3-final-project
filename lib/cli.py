@@ -87,7 +87,7 @@ def hikermenu_2():
     print("\n")
     # print("\t\t\thikermenu_2")
     print("\t\t\t\t* type n to update hiker name")
-    print("\t\t\t\t* type a to update hiker name")
+    print("\t\t\t\t* type a to update hiker age")
     print("\t\t\t\t* type b to go back")
     print("\n")
 
