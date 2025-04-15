@@ -2,14 +2,10 @@
 
 from helpers import (
     exit_program,
-    trailname,
     hikername,
     hikename,
     list_hiker_hikes,
-    add_trail,
-    find_trail_by_id,
-    find_trail_by_name,
-    update_trail_name
+    add_hike
 )
 
 def main():
@@ -21,19 +17,11 @@ def main():
         elif choice == "1":
             list_hiker_hikes()
         elif choice == "2":
-            trailname()
-        elif choice == "3":
             hikername()
-        elif choice == "4":
+        elif choice == "3":
             hikename()
-        elif choice == "5":
-            add_trail()
-        elif choice == "6":
-            find_trail_by_id()
-        elif choice == "7":
-            find_trail_by_name()
-        elif choice == "8":
-            update_trail_name()
+        elif choice == "4":
+            add_hike()
         else:
             print("Invalid choice")
 
@@ -42,13 +30,9 @@ def menu():
     print("Please select an option:")
     print("0. Exit the program")
     print("1. List hiker's completed trails")
-    print("2. Print trail name")
-    print("3. Print hikername")
-    print("4. Print hikename")
-    print("5. Add new trail")
-    print("6. Find by trail id")
-    print("7. Find by trail name")
-    print("8. Update trail name")
+    print("2. Print hiker names")
+    print("3. Print hike records")
+    print("4. Add new hike")
 
 if __name__ == "__main__":
     main()

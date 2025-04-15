@@ -1,6 +1,5 @@
 from models.__init__ import CURSOR, CONN
 
-from models.trail import Trail
 from models.hiker import Hiker
 
 class Hike:
@@ -8,29 +7,40 @@ class Hike:
 
     all = {}
 
-    def __init__(self, trail, hiker, id=None):
+    def __init__(self, trail_name, hiker, id=None):
         self.id = id
-        self.trail = trail
+        self.trail_name = trail_name
         self.hiker = hiker
 
     def __repr__(self):
-        return f"Hike: {self.trail} completed by {self.hiker}"
+        return f"Hike: {self.trail_name} completed by {self.hiker}"
+
+    @property
+    def trail_name(self):
+        return self._trail_name
+
+    @trail_name.setter
+    def trail_name(self, value):
+        if isinstance(value, str) and len(value) > 3:
+            self._trail_name = value
+        else:
+            raise Exception("Trail name must be a string longer than 3 characters.")
 
     @property
     def hiker(self):
         return self._hiker
-    
+
     @hiker.setter
     def hiker(self, value):
         if isinstance(value, Hiker):
             self._hiker = value
         else:
             raise Exception("Hiker must be an instance of the Hiker class.")
-    
+
     @property
     def trail(self):
         return self._trail
-    
+
     @trail.setter
     def trail(self, value):
         if isinstance(value, Trail):
@@ -44,9 +54,8 @@ class Hike:
         sql = """
             CREATE TABLE IF NOT EXISTS hikes (
             id INTEGER PRIMARY KEY,
-            trail_id INTEGER,
+            trail_name INTEGER,
             hiker_id INTEGER,
-            FOREIGN KEY (trail_id) REFERENCES trails(id),
             FOREIGN KEY (hiker_id) REFERENCES hikers(id))
         """
         CURSOR.execute(sql)
@@ -66,20 +75,20 @@ class Hike:
         Update object id attribute using the primary key value of new row.
         Save the object in local dictionary using table row's PK as dictionary key"""
         sql = """
-                INSERT INTO hikes (trail_id, hiker_id)
+                INSERT INTO hikes (trail_name, hiker_id)
                 VALUES (?, ?)
         """
 
-        CURSOR.execute(sql, (self.trail.id, self.hiker.id))
+        CURSOR.execute(sql, (self.trail_name, self.hiker.id))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, trail, hiker):
+    def create(cls, trail_name, hiker):
         """ Initialize a new Hike instance and save the object to the database """
-        hike = cls(trail, hiker)
+        hike = cls(trail_name, hiker)
         hike.save()
         return hike
 
@@ -88,18 +97,15 @@ class Hike:
         """Return a Hike object having the attribute values from the table row."""
 
         # Check the dictionary for  existing instance using the row's primary key
-        hike_id, trail_id, hiker_id = row
-        trail = Trail.all.get(trail_id)
+        hike_id, trail_name, hiker_id = row
         hiker = Hiker.all.get(hiker_id)
 
-        if not trail:
-            raise Exception(f"Trail with ID {trail_id} not found.")
         if not hiker:
             raise Exception(f"Hiker with ID {hiker_id} not found.")
 
         hike = cls.all.get(hike_id)
         if not hike:
-            hike = cls(trail, hiker, id=hike_id)
+            hike = cls(trail_name, hiker, id=hike_id)
             cls.all[hike_id] = hike
 
         return hike

@@ -2,7 +2,6 @@
 
 import random
 
-from models.trail import Trail
 from models.hiker import Hiker
 from models.hike import Hike
 
@@ -12,50 +11,51 @@ def list_hiker_hikes():
     if hiker:
         print(f"Hiker {hiker.name} has completed the following hikes:")
         for hike in hiker.hikes():
-            print(hike)
-
-def trailname():
-    trails = Trail.get_all()
-    for trail in trails:
-        print(trail)
+            print(f"- {hike.trail_name}")
+    else:
+        print("Hiker not found.")
 
 def hikername():
-    hikers = Hiker.get_all()
-    for hiker in hikers:
+    for hiker in Hiker.get_all():
         print(hiker)
 
 def hikename():
-    hikes = Hike.get_all()
-    for hike in hikes:
+    for hike in Hike.get_all():
         print(hike)
 
-def add_trail():
-    new_trail_name = input("Please enter new trail name: ")
-    new_trail = Trail.create(new_trail_name)
-    print(new_trail)
-
-def find_trail_by_id():
-    searched_trail_id = int(input("Please enter id of the trail searched: "))
-    print(Trail.find_by_id(searched_trail_id))
-
-def find_trail_by_name():
-    searched_trail_name = input("Please enter name of the trail searched: ")
-    output = Trail.find_by_name(searched_trail_name)
-    if output:
-        print(output)
+def add_hike():
+    # renamed to "add_hike" functionality
+    hikername = input("Enter hiker name: ")
+    trail_name = input("Enter trail name: ")
+    hiker = next((h for h in Hiker.get_all() if h.name == hikername), None)
+    if hiker:
+        hike = Hike.create(trail_name, hiker)
+        print(f"Hike created: {hike}")
     else:
-        print("Could not find trail with entered name.")
+        print("Hiker not found.")
+
+# def find_trail_by_id():
+#     searched_trail_id = int(input("Please enter id of the trail searched: "))
+#     print(Trail.find_by_id(searched_trail_id))
+
+# def find_trail_by_name():
+#     searched_trail_name = input("Please enter name of the trail searched: ")
+#     output = Trail.find_by_name(searched_trail_name)
+#     if output:
+#         print(output)
+#     else:
+#         print("Could not find trail with entered name.")
     
-def update_trail_name():
-    searched_trail_id = int(input("Please enter id of the trail searched: "))
-    output = Trail.find_by_id(searched_trail_id)
-    if output:
-        new_name = input("Enter the trails's new name: ")
-        output.name = new_name
-        output.update()
-        print(f"Success: {output}")
-    else:
-        print("Error updating trail name")
+# def update_trail_name():
+#     searched_trail_id = int(input("Please enter id of the trail searched: "))
+#     output = Trail.find_by_id(searched_trail_id)
+#     if output:
+#         new_name = input("Enter the trails's new name: ")
+#         output.name = new_name
+#         output.update()
+#         print(f"Success: {output}")
+#     else:
+#         print("Error updating trail name")
 
 def exit_program():
     print("Goodbye!")
