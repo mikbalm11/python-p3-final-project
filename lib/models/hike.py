@@ -37,17 +37,6 @@ class Hike:
         else:
             raise Exception("Hiker must be an instance of the Hiker class.")
 
-    @property
-    def trail(self):
-        return self._trail
-
-    @trail.setter
-    def trail(self, value):
-        if isinstance(value, Trail):
-            self._trail = value
-        else:
-            raise Exception("Trail must be an instance of the Trail class.")
-
     @classmethod
     def create_table(cls):
         """ Create a new table to persist the attributes of Hike instances """
