@@ -1,38 +1,75 @@
 # lib/helpers.py
 
-import random
-
 from models.hiker import Hiker
 from models.hike import Hike
 
 def list_hikes(hiker_id):
     hiker = next((hiker for hiker in Hiker.all_hikers() if hiker.id == hiker_id), None)
     if hiker:
-        print(f"Hiker {hiker.name} has completed the following hikes:")
-        for hike in hiker.hikes():
-            print(f"- {hike.trail_name}")
+        if hiker.hikes():
+            print(f"Hiker {hiker.name} has completed the following hikes:")
+            for hike in hiker.hikes():
+                print(f"{hike.id}. {hike.trail_name}")
+        else:
+            print("This hiker has not yet completed any hikes.")
     else:
         print("Hiker not found.")
 
 def hikername():
     for hiker in Hiker.get_all():
-        print(hiker)
+        print(f"\t\t{hiker}")
 
-def hikename():
-    for hike in Hike.get_all():
-        print(hike)
+# def hikename():
+#     for hike in Hike.get_all():
+#         print(f"\t\t{hike}")
 
-def add_hike():
+def add_hike(hiker_id):
     # renamed to "add_hike"
-    hikername = input("Enter hiker name: ")
-    trail_name = input("Enter trail name: ")
-    hiker = next((h for h in Hiker.get_all() if h.name == hikername), None)
+    trail_name = input("Enter trail name completed by this hiker: ")
+    hiker = next((h for h in Hiker.get_all() if h.id == hiker_id), None)
     if hiker:
         hike = Hike.create(trail_name, hiker)
         print(f"Hike created: {hike}")
     else:
-        # have user create the hiker first
-        print("Hiker not found. Please add the hiker first using the 'Add hiker' option.")
+        print("There was a problem finding hiker. Trail could not be added.")
+
+def update_hike(hike_id):
+    try:
+        hike = Hike.find_by_id(hike_id)
+        if not hike:
+            print("No hike found with that ID.")
+            return
+
+        print(f"Current hike: {hike}")
+
+        new_trail_name = input("Enter new trail name (leave blank to keep current): ")
+        new_trail_name = new_trail_name if new_trail_name else hike.trail_name
+
+        hiker_name = input("Enter new hiker's name (leave blank to keep current): ")
+        if hiker_name:
+            hiker = Hiker.find_by_name(hiker_name)
+            if not hiker:
+                print("No hiker found with that name.")
+                return
+        else:
+            hiker = hike.hiker
+
+        hike.trail_name = new_trail_name
+        hike.hiker = hiker
+        hike.update()
+
+    except ValueError:
+        print("Please enter a valid hike ID.")
+
+def delete_hike(hike_id):
+    try:
+        hike = Hike.find_by_id(hike_id)
+        if hike:
+            hike.delete()
+        else:
+            print("No hike found with that ID.")
+    except ValueError:
+        print("Please enter a valid integer ID.")
 
 def add_hiker():
     name = input("Enter hiker's name: ")
@@ -48,23 +85,13 @@ def add_hiker():
         print(f"Error adding hiker: {e}")
 
 def find_hiker_by_id(searched_hike_id):
-    # searched_hike_id = int(input("Please enter id of the hiker searched: "))
     output = Hiker.find_by_id(searched_hike_id)
     if output:
         return output
     else:
         print("Could not find hiker with entered id. You can list all hiker information using 'Print hiker names' option.")
 
-def find_hiker_by_name():
-    searched_hike_name = input("Please enter name of the hiker searched: ")
-    output = Hiker.find_by_name(searched_hike_name)
-    if output:
-        print(output)
-    else:
-        print("Could not find hiker with entered name. You can list all hiker information using 'Print hiker names' option.")
-    
 def update_hiker_name(searched_hiker_id):
-    # searched_hiker_id = int(input("Please enter id of the hiker searched: "))
     output = Hiker.find_by_id(searched_hiker_id)
     if output:
         new_name = input("Enter the hiker's new name: ")

@@ -81,6 +81,34 @@ class Hike:
         hike.save()
         return hike
 
+    def update(self):
+        """Update the hike's trail name and hiker_id in the database."""
+        if self.id is not None:
+            sql = """
+                UPDATE hikes
+                SET trail_name = ?, hiker_id = ?
+                WHERE id = ?
+            """
+            CURSOR.execute(sql, (self.trail_name, self.hiker.id, self.id))
+            CONN.commit()
+            print(f"Hike {self.id} updated.")
+        else:
+            print("Hike must be saved in the database before it can be updated.")
+
+    def delete(self):
+        """Delete this hike from the database."""
+        if self.id is not None:
+            sql = "DELETE FROM hikes WHERE id = ?"
+            CURSOR.execute(sql, (self.id,))
+            CONN.commit()
+            print(f"Hike {self.id} deleted.")
+
+            # Optional: Remove from local cache
+            if self.id in type(self).all:
+                del type(self).all[self.id]
+        else:
+            print("Hike must be saved in the database before it can be deleted.")
+
     @classmethod
     def instance_from_db(cls, row):
         """Return a Hike object having the attribute values from the table row."""
@@ -118,6 +146,12 @@ class Hike:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_id(cls, id):
+        sql = "SELECT * FROM hikes WHERE id = ?"
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
 
     @classmethod
     def all_hikes(cls):
