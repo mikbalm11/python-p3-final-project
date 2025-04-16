@@ -43,7 +43,7 @@ class Hike:
         sql = """
             CREATE TABLE IF NOT EXISTS hikes (
             id INTEGER PRIMARY KEY,
-            trail_name INTEGER,
+            trail_name TEXT,
             hiker_id INTEGER,
             FOREIGN KEY (hiker_id) REFERENCES hikers(id))
         """

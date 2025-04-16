@@ -16,6 +16,7 @@ from helpers import (
 
 def main():
     while True:
+        banner()
         main_menu()
         choice = input("> ").lower()
         if choice == "e":
@@ -73,6 +74,11 @@ def main():
         #     hikename()
         else:
             invalid()
+
+def banner():
+    print(r"""
+                TRAILMANAGER CLI - HIKE SMART, HIKE PROUD 🌲
+    """)
 
 def main_menu():
     print("\n")
