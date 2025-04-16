@@ -16,7 +16,7 @@ def list_hikes(hiker_id):
         print("Hiker not found.")
 
 def hikername():
-    for hiker in Hiker.get_all():
+    for hiker in Hiker.all_hikers():
         print(f"\t\t{hiker}")
 
 # def hikename():
@@ -26,7 +26,7 @@ def hikername():
 def add_hike(hiker_id):
     # renamed to "add_hike"
     trail_name = input("Enter trail name completed by this hiker: ")
-    hiker = next((h for h in Hiker.get_all() if h.id == hiker_id), None)
+    hiker = next((h for h in Hiker.all_hikers() if h.id == hiker_id), None)
     if hiker:
         hike = Hike.create(trail_name, hiker)
         print(f"Hike created: {hike}")

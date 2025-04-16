@@ -111,7 +111,7 @@ class Hiker:
         return hiker
 
     @classmethod
-    def get_all(cls):
+    def all_hikers(cls):
         """Return a list containing one Hiker object per table row"""
         sql = """
             SELECT *
@@ -150,7 +150,3 @@ class Hiker:
         """Return a list of all hikes completed by this hiker."""
         from models.hike import Hike
         return Hike.get_by_hiker_id(self.id)
-
-    @classmethod
-    def all_hikers(cls):
-        return cls.all.values()
