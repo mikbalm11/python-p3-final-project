@@ -3,7 +3,6 @@
 from helpers import (
     exit_program,
     hikername,
-    # hikename,
     list_hikes,
     add_hike,
     update_hike,
