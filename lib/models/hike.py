@@ -1,3 +1,5 @@
+# lib/models/hike.py
+
 from models.__init__ import CURSOR, CONN
 
 from models.hiker import Hiker
