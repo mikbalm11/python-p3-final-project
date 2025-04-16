@@ -5,7 +5,7 @@ from models.__init__ import CURSOR, CONN
 from models.hiker import Hiker
 
 class Hike:
-    """Represents a hiking event linking a hiker with a trail."""
+    """The Hike class represents a hiking record associated with a specific hiker."""
 
     all = {}
 
