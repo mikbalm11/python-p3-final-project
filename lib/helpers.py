@@ -45,17 +45,7 @@ def update_hike(hike_id):
         new_trail_name = input("Enter new trail name (leave blank to keep current): ")
         new_trail_name = new_trail_name if new_trail_name else hike.trail_name
 
-        hiker_name = input("Enter new hiker's name (leave blank to keep current): ")
-        if hiker_name:
-            hiker = Hiker.find_by_name(hiker_name)
-            if not hiker:
-                print("No hiker found with that name.")
-                return
-        else:
-            hiker = hike.hiker
-
         hike.trail_name = new_trail_name
-        hike.hiker = hiker
         hike.update()
 
     except ValueError:
