@@ -12,6 +12,8 @@ def reset_database():
     # Reset database tables
     Hiker.drop_table()
     Hike.drop_table()
+    Hiker.all = {}
+    Hike.all = {}
     Hiker.create_table()
     Hike.create_table()
 
@@ -25,8 +27,8 @@ def reset_database():
 
     print("Hikers in memory:", Hiker.all.keys())
 
-    hikers = Hiker.get_all()
-    # Create 20 Hike instances, randomly assigning trails and hikers 
+    hikers = Hiker.all_hikers()
+    # Create 60 Hike instances, randomly assigning trails and hikers 
     for _ in range(60):
         Hike.create(random.choice(trail_names), random.choice(hikers))
 

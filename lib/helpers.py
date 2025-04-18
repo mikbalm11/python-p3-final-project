@@ -3,6 +3,11 @@
 from models.hiker import Hiker
 from models.hike import Hike
 
+def hikername():
+    """Prints the name of all hikers."""
+    for hiker in Hiker.all_hikers():
+        print(f"\t\t{hiker}")
+
 def list_hikes(hiker_id):
     """Lists all hikes completed by a specific hiker."""
     hiker = next((hiker for hiker in Hiker.all_hikers() if hiker.id == hiker_id), None)
@@ -10,16 +15,12 @@ def list_hikes(hiker_id):
         if hiker.hikes():
             print(f"Hiker {hiker.name} has completed the following hikes:")
             for hike in hiker.hikes():
-                print(f"{hike.id}. {hike.trail_name}")
+                print(f"{hike.id:2}. {hike.trail_name}")
+            print(f"Total hikes: {len(hiker.hikes())}")
         else:
             print("This hiker has not yet completed any hikes.")
     else:
         print("Hiker not found.")
-
-def hikername():
-    """Prints the name of all hikers."""
-    for hiker in Hiker.all_hikers():
-        print(f"\t\t{hiker}")
 
 def add_hike(hiker_id):
     """Adds a new hike for a specific hiker."""
@@ -41,8 +42,7 @@ def update_hike(hike_id):
 
         print(f"Current hike: {hike}")
 
-        new_trail_name = input("Enter new trail name (leave blank to keep current): ")
-        new_trail_name = new_trail_name if new_trail_name else hike.trail_name
+        new_trail_name = input("Enter new trail name: ")
 
         hike.trail_name = new_trail_name
         hike.update()
@@ -59,9 +59,9 @@ def delete_hike(hike_id):
         if hike:
             hike.delete()
         else:
-            print("No hike found with that ID.")
+            print("No hike found with number entered.")
     except ValueError:
-        print("Please enter a valid integer ID.")
+        print("Please enter a valid integer.")
     except Exception as e:
         print(f"Error deleting hike: {e}")
 
@@ -109,7 +109,22 @@ def update_hiker_age(searched_hiker_id):
     else:
         print("Error updating hiker name")
 
+def delete_hiker(hiker_id):
+    try:
+        hiker = Hiker.find_by_id(hiker_id)
+        if hiker:
+            confirm = input(f"Are you sure you want to delete hiker '{hiker.name}'? This will also delete all associated hikes. (y/n): ").strip().lower()
+            if confirm == "y":
+                hiker.delete()
+                print(f"Hiker '{hiker.name}' has been deleted.")
+            else:
+                print("Deletion cancelled.")
+        else:
+            print("No hiker found with number entered.")
+    except ValueError:
+        print("Please enter a valid integer.")
+
 def exit_program():
     """Exits the program with a goodbye message."""
-    print("Goodbye!")
+    print("Goodbye. Thanks for choosing TrailManager!")
     exit()

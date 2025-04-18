@@ -15,7 +15,7 @@ class Hike:
         self.hiker = hiker
 
     def __repr__(self):
-        return f"{self.id}. Hike: {self.trail_name} completed by {self.hiker}"
+        return f"{self.id:2}. Hike: {self.trail_name} completed by {self.hiker}"
 
     @property
     def trail_name(self):

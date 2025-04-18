@@ -13,7 +13,7 @@ class Hiker:
         self.age = age
 
     def __repr__(self):
-        return f"{self.id}. Hiker: {self.name}, {self.age} years old."
+        return f"{self.id:2}. Hiker: {self.name:9} {self.age:3} years old."
     
     @property
     def name(self):
@@ -93,6 +93,16 @@ class Hiker:
         """
 
         CURSOR.execute(sql, (self.name, self.age, self.id))
+        CONN.commit()
+
+    def delete(self):
+        # Delete all hikes for this hiker
+        sql = "DELETE FROM hikes WHERE hiker_id = ?"
+        CURSOR.execute(sql, (self.id,))
+        
+        # Delete the hiker itself
+        sql = "DELETE FROM hikers WHERE id = ?"
+        CURSOR.execute(sql, (self.id,))
         CONN.commit()
 
     @classmethod
