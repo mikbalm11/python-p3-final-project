@@ -85,7 +85,7 @@ def find_hiker_by_id(searched_hike_id):
     if output:
         return output
     else:
-        print("Could not find hiker with entered id. You can list all hiker information using 'Print hiker names' option.")
+        print("Could not find hiker with entered id. You can list all hiker information using 'see all hikers' option.")
 
 def update_hiker_name(searched_hiker_id):
     """Updates the name of a hiker identified by their ID - hiker number for the CLI user."""
