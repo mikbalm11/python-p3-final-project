@@ -95,7 +95,20 @@ class Hiker:
         CURSOR.execute(sql, (self.name, self.age, self.id))
         CONN.commit()
 
+    @classmethod
+    def find_by_id(cls, id):
+        """Return Hiker object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM hikers
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
     def delete(self):
+        """ Deletes the Hiker instance and all associated Hike records from the database."""
         # Delete all hikes for this hiker
         sql = "DELETE FROM hikes WHERE hiker_id = ?"
         CURSOR.execute(sql, (self.id,))
@@ -134,30 +147,6 @@ class Hiker:
 
         return [cls.instance_from_db(row) for row in rows]
 
-    @classmethod
-    def find_by_id(cls, id):
-        """Return Hiker object corresponding to the table row matching the specified primary key"""
-        sql = """
-            SELECT *
-            FROM hikers
-            WHERE id = ?
-        """
-
-        row = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(row) if row else None
-
-    @classmethod
-    def find_by_name(cls, name):
-        """Return Hiker object corresponding to first table row matching specified name"""
-        sql = """
-            SELECT *
-            FROM hikers
-            WHERE name = ?
-        """
- 
-        row = CURSOR.execute(sql, (name,)).fetchone()
-        return cls.instance_from_db(row) if row else None
-    
     def hikes(self):
         """Return a list of all hikes completed by this hiker."""
         from models.hike import Hike

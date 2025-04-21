@@ -83,6 +83,13 @@ class Hike:
         hike.save()
         return hike
 
+    @classmethod
+    def find_by_id(cls, id):
+        """Retrieves a Hike record by its unique ID."""
+        sql = "SELECT * FROM hikes WHERE id = ?"
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
     def update(self):
         """Update the hike's trail name and hiker_id in the database."""
         if self.id is not None:
@@ -131,6 +138,7 @@ class Hike:
 
     @classmethod
     def get_by_hiker_id(cls, hiker_id):
+        """Retrieves all Hike records associated with a specific hiker."""
         sql = """
             SELECT * FROM hikes WHERE hiker_id = ?
         """
@@ -138,7 +146,7 @@ class Hike:
         return [cls.instance_from_db(row) for row in rows]
 
     @classmethod
-    def get_all(cls):
+    def all_hikes(cls):
         """Return a list containing one Hike object per table row"""
         sql = """
             SELECT *
@@ -148,13 +156,3 @@ class Hike:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
-
-    @classmethod
-    def find_by_id(cls, id):
-        sql = "SELECT * FROM hikes WHERE id = ?"
-        row = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(row) if row else None
-
-    @classmethod
-    def all_hikes(cls):
-        return cls.all.values()

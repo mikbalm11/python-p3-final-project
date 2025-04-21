@@ -1,172 +1,128 @@
-# Phase 3 CLI+ORM Project Template
+# Hiker's Trail Tracker CLI App
 
-## Learning Goals
+## Overview
 
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
+This CLI application allows outdoor enthusiasts and hikers to track their hikes, manage hiker profiles, and log essential hike information. It uses an SQLite database for persistent data storage and is built using Python with an object-oriented approach. This project was developed as part of a Phase 3 assignment at Flatiron School, demonstrating the integration of a command-line interface with object-relational mapping.
 
 ---
 
-## Introduction
+## Features
 
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
+- Add, view, update, and delete Hiker profiles
+- Log Hikes with name attribute along with the hiker
+- View and manage Hikes per Hiker
+- SQLite-powered persistent storage
+- Clean modular structure separating CLI, helper functions, and data models
 
-Take a look at the directory structure:
+---
 
-```console
+## File Structure
+
+```
 .
 ├── Pipfile
 ├── Pipfile.lock
 ├── README.md
 └── lib
-    ├── models
-    │   ├── __init__.py
-    │   └── model_1.py
-    ├── cli.py
-    ├── debug.py
-    └── helpers.py
+    ├── cli.py              # CLI main menu interface
+    ├── debug.py            # Interactive debugger
+    ├── helpers.py          # Reusable helper functions and CLI utilities
+    └── models
+        ├── __init__.py     # DB setup and initialization
+        ├── hiker.py        # Hiker model
+        └── hike.py         # Hike model
 ```
-
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
 
 ---
 
-## Generating Your Environment
+## Getting Started
 
-You might have noticed in the file structure- there's already a Pipfile!
+### 1. Install Dependencies
 
-Install any additional dependencies you know you'll need for your project by
-adding them to the `Pipfile`. Then run the commands:
-
-```console
+```bash
 pipenv install
 pipenv shell
 ```
 
----
+### 2. Run the CLI
 
-## Generating Your CLI
-
-A CLI is, simply put, an interactive script and prompts the user and performs
-operations based on user input.
-
-The project template has a sample CLI in `lib/cli.py` that looks like this:
-
-```py
-# lib/cli.py
-
-from helpers import (
-    exit_program,
-    helper_1
-)
-
-
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
-        else:
-            print("Invalid choice")
-
-
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
-
-
-if __name__ == "__main__":
-    main()
+```bash
+python lib/cli.py
 ```
-
-The helper functions are located in `lib/helpers.py`:
-
-```py
-# lib/helpers.py
-
-def helper_1():
-    print("Performing useful function#1.")
-
-
-def exit_program():
-    print("Goodbye!")
-    exit()
-```
-
-You can run the template CLI with `python lib/cli.py`, or include the shebang
-and make it executable with `chmod +x`. The template CLI will ask for input, do
-some work, and accomplish some sort of task.
-
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
-
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
-
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
-
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
-
-- User interface
-- Data persistence
-- Problem domain rules and logic
 
 ---
 
-## Updating README.md
+## Models
 
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
+### Hiker (`lib/models/hiker.py`)
 
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
+Represents an individual hiker.
 
-### What Goes into a README?
+**Attributes**:
+- `id`: Primary key
+- `name`: Hiker's name
 
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
+**Methods**:
+- `.create()`
+- `.find_by_id()`
+- `.update()`
+- `.delete()`
+- `.all_hikers()`
+- `.hikes()` — returns all associated hikes
 
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
+---
 
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+### Hike (`lib/models/hike.py`)
+
+Represents an individual hike entry.
+
+**Attributes**:
+- `id`: Primary key
+- `name`: Name of the hike
+- `hiker_id`: Foreign key linking to a Hiker
+
+**Methods**:
+- `.create()`
+- `.find_by_id()`
+- `.update()`
+- `.delete()`
+- `.get_by_hiker_id()`
+- `.all_hikes()` - unused at this time
+
+---
+
+## CLI (`lib/cli.py`)
+
+The main interactive command-line interface that guides the user through managing hikers and hikes.
+
+**Key options include**:
+- View all Hikers
+- Add a new Hiker
+- Update or Delete a Hiker
+- View Hikes for a Hiker
+- Add a Hike to a Hiker
+- Update or Delete a Hike
+- Exit the program
+
+---
+
+## Helpers (`lib/helpers.py`)
+
+Reusable functions that assist with user input and reduce code duplication in `cli.py`.
+
+**Examples**:
+- `hikername()`
+- `add_hiker()`
+- `update_hiker_name()`
+- `update_hiker_age()`
+- `add_hike()`
+- `update_hike()`
+- `delete_hike()`
 
 ---
 
 ## Conclusion
 
-A lot of work goes into a good CLI, but it all relies on concepts that you've
-practiced quite a bit by now. Hopefully this template and guide will get you off
-to a good start with your Phase 3 Project.
-
-Happy coding!
+This CLI tool provides a solid foundation for managing hikes and hikers using a simple command-line interface. It can be extended further into a web app or REST API in future phases. Whether you're keeping track of your favorite trails or building out backend CRUD operations, this app gives you full control.
 
 ---
-
-## Resources
-
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
