@@ -1,17 +1,23 @@
 # lib/cli.py
 
 from helpers import (
-    exit_program,
-    hikername,
+    list_all_hikers,
+    add_hiker,
+    find_hiker_by_id,
     list_hikes,
+    update_hiker_name,
+    update_hiker_age,
     add_hike,
     update_hike,
     delete_hike,
-    add_hiker,
-    find_hiker_by_id,
-    update_hiker_name,
-    update_hiker_age,
     delete_hiker,
+    banner,
+    main_menu,
+    hikermenu_1,
+    hikermenu_2,
+    newline,
+    invalid,
+    exit_program
 )
 
 def main():
@@ -25,20 +31,19 @@ def main():
             exit_program()
         elif choice == "h":
             newline()
-            hikername()
+            list_all_hikers()
             hiker_menu_1 = True
             while hiker_menu_1:
                 hikermenu_1()
                 choice = input("> ").lower()
-                # print(f'my input is {choice} with typeof {type(choice)}')
                 if choice == "b":
                     hiker_menu_1 = False
                     newline()
-                    hikername()
+                    list_all_hikers()
                 elif choice == "a":
                     add_hiker()
                     newline()
-                    hikername()
+                    list_all_hikers()
                 elif choice.isdigit():
                     newline()
                     hiker_id = int(choice)
@@ -53,7 +58,7 @@ def main():
                             choice_hm2 = input("> ").lower()
                             if choice_hm2 == "b":
                                 hiker_menu_2 = False
-                                hikername()
+                                list_all_hikers()
                             elif choice_hm2 == "n":
                                 update_hiker_name(hiker_id)
                                 newline()
@@ -80,56 +85,17 @@ def main():
                                 delete_hiker(hiker_id)
                                 hiker_menu_2 = False
                                 newline()
-                                hikername()
+                                list_all_hikers()
+                            elif choice_hm2 == "e":
+                                exit_program()
                             else:
                                 invalid()
+                elif choice == "e":
+                    exit_program()
                 else:
                     invalid()
-        # elif choice == "a":
-        #     hikename()
         else:
             invalid()
-
-def banner():
-    """Prints a simple banner."""
-    print(r"""TRAILMANAGER CLI - HIKE SMART, HIKE PROUD 🌲""")
-
-def main_menu():
-    """Program is initiated, lists simple options to list all hikers or exit the program."""
-    newline()
-    print("Please select an option:")
-    print("\t* type h to see all hikers")
-    print("\t* type e to exit")
-    newline()
-
-def hikermenu_1():
-    """List hikers option is selected, lists all hikers and an option to add one, also an option to go back."""
-    newline()
-    print("\t\t* type hiker number to see their hikes")
-    print("\t\t* type a to add new hiker")
-    print("\t\t* type b to go back")
-    newline()
-
-def hikermenu_2():
-    """A hiker number - ID is selected and their hikes are listed, lists a bunch of CRUD options on both the hiker itself and their hikes."""
-    newline()
-    print("\t\t\t* type n to update hiker name")
-    print("\t\t\t* type a to update hiker age")
-    print("\t\t\t* type h to add a new hike completed by this hiker")
-    print("\t\t\t* type u to update a hike completed by this hiker")
-    print("\t\t\t* type d to delete a hike completed by this hiker")
-    print("\t\t\t* type r to remove this hiker and their hikes")
-    print("\t\t\t* type b to go back")
-    newline()
-
-def invalid():
-    """And invalid selection is made, prompts the user as such. """
-    newline()
-    print("Invalid choice")
-    
-def newline():
-    """Prints a new line."""
-    print("\n")
 
 if __name__ == "__main__":
     main()
